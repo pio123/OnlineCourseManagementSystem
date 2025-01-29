@@ -1,0 +1,29 @@
+﻿@model OnlineCourseManagementSystem.Models.Enrollment
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <h2>Delete Enrollment</h2>
+
+    <div>
+        <h3>Are you sure you want to delete this?</h3>
+        <div>
+            <label>Student:</label>
+            <b>@Model.Student.FirstName @Model.Student.LastName</b>
+        </div>
+        <div>
+            <label>Course:</label>
+            <b>@Model.Course.Title</b>
+        </div>
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="EnrollmentId" />
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+}
+else
+{
+    <h2>You are not authorized to delete enrollments.</h2>
+}

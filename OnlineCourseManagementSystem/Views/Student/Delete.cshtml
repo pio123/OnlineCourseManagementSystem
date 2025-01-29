@@ -1,0 +1,29 @@
+﻿@model OnlineCourseManagementSystem.Models.Student
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <h2>Delete Student</h2>
+
+    <div>
+        <h3>Are you sure you want to delete this?</h3>
+        <div>
+            <label>Name:</label>
+            <b>@Model.FirstName @Model.LastName</b>
+        </div>
+        <div>
+            <label>Email:</label>
+            <b>@Model.Email</b>
+        </div>
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="StudentId" />
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+}
+else
+{
+    <h2>You are not authorized to delete this student.</h2>
+}

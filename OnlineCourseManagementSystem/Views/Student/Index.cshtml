@@ -1,0 +1,73 @@
+﻿@using OnlineCourseManagementSystem.Reusables
+@model PaginatedList<OnlineCourseManagementSystem.Models.Student>
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<IdentityUser> SignInManager
+
+@{
+    ViewData["Title"] = "Students";
+}
+
+<h2>Students</h2>
+
+@if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+{
+    <p>
+        <a asp-action="Create">Create New Student</a>
+    </p>
+}
+
+<form method="get">
+    <p>
+        Search: <input type="text" name="search" value="@ViewData["CurrentFilter"]" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]">Name</a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["EmailSortParam"]">Email</a>
+            </th>
+            <th>Date of Birth</th>
+            <th>Enrollment Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.FirstName @item.LastName</td>
+                <td>@item.Email</td>
+                <td>@item.DateOfBirth.ToShortDateString()</td>
+                <td>@item.EnrollmentDate.ToShortDateString()</td>
+                <td>
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.StudentId">Edit</a>
+                        <span> | </span>
+                        <a asp-action="Delete" asp-route-id="@item.StudentId">Delete</a>
+                        <span> | </span>
+                    }
+                    <a asp-action="Details" asp-route-id="@item.StudentId">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    @if (Model.HasPreviousPage)
+    {
+        <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex - 1)">Previous</a>
+    }
+    @if (Model.HasNextPage)
+    {
+        <a asp-action="Index" asp-route-pageNumber="@(Model.PageIndex + 1)">Next</a>
+    }
+</div>

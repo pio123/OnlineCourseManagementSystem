@@ -1,0 +1,41 @@
+﻿@model OnlineCourseManagementSystem.Models.Course
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<h2>Course Details</h2>
+
+<div>
+    <div>
+        <label>Title:</label>
+        <b>@Model.Title</b>
+    </div>
+    <div>
+        <label>Description:</label>
+        <b>@Model.Description</b>
+    </div>
+    <div>
+        <label>Credits:</label>
+        <b>@Model.Credits</b>
+    </div>
+    <div>
+        <label>Start Date:</label>
+        <b>@Model.StartDate.ToShortDateString()</b>
+    </div>
+    <div>
+        <label>End Date:</label>
+        <b>@Model.EndDate.ToShortDateString()</b>
+    </div>
+    <div>
+        <label>Is Active:</label>
+        <b>@(Model.IsActive ? "Yes" : "No")</b>
+    </div>
+</div>
+
+<p>
+    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.CourseId">Edit</a>
+        <span> | </span>
+    }
+    <a asp-action="Index">Back to List</a>
+</p>

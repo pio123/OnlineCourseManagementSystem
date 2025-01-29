@@ -1,0 +1,24 @@
+﻿@model OnlineCourseManagementSystem.Models.ManageRolesViewModel
+
+@{
+    ViewData["Title"] = "Manage Roles";
+}
+
+<h2>Manage Roles for @Model.UserName</h2>
+
+<form asp-action="UpdateRoles" method="post">
+    <input type="hidden" asp-for="UserId" />
+
+    <div class="form-group">
+        <label for="SelectedRole">Select Role:</label>
+        <select class="form-control" name="SelectedRole">
+            @foreach (var role in ViewBag.AllRoles as List<string>)
+            {
+                <option value="@role" selected="@(Model.CurrentRole == role ? "selected" : null)">@role</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
