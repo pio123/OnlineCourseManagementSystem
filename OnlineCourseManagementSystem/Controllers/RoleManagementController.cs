@@ -33,13 +33,13 @@ namespace OnlineCourseManagementSystem.Controllers
             var userRoles = await _userManager.GetRolesAsync(user);
             var allRoles = _roleManager.Roles.Select(r => r.Name).ToList();
 
-            ViewBag.AllRoles = allRoles; // Pass roles to the view
+            ViewBag.AllRoles = allRoles;
 
             var model = new ManageRolesViewModel
             {
                 UserId = user.Id,
                 UserName = user.UserName,
-                CurrentRole = userRoles.FirstOrDefault() // Get current role (assuming single role per user)
+                CurrentRole = userRoles.FirstOrDefault()
             };
 
             return View(model);
@@ -54,10 +54,8 @@ namespace OnlineCourseManagementSystem.Controllers
             var userRoles = await _userManager.GetRolesAsync(user);
             var allRoles = _roleManager.Roles.Select(r => r.Name).ToList();
 
-            // Remove all current roles
             await _userManager.RemoveFromRolesAsync(user, userRoles);
 
-            // Assign the newly selected role
             if (!string.IsNullOrEmpty(SelectedRole) && allRoles.Contains(SelectedRole))
             {
                 await _userManager.AddToRoleAsync(user, SelectedRole);
